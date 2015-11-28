@@ -1,0 +1,202 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="stylesheets/style.css"/>
+	
+	<script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/1.10.5/js/jquery.dataTables.min.js"></script>
+  	<script type="text/javascript" src="https://cdn.datatables.net/plug-ins/f2c75b7247b/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+  
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/plug-ins/f2c75b7247b/integration/bootstrap/3/dataTables.bootstrap.css" media="screen" />
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"/>
+	<script type="text/javascript" charset="utf8" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.css"/>
+	<script type="text/javascript" src="index.js"></script>
+	<script>
+	toBeDeletedId = null;
+	function deleteRecord(id){
+		console.log("Inside function deleteRecord");
+		console.log("ID is " + id);
+		$('#deleteRecordModal').modal('show'); 
+		toBeDeletedId = id;
+	}
+
+	function deleteAjax(){
+		console.log("Inside Delete");
+		console.log("ID value is "+toBeDeletedId);
+		  var query = "id=" + toBeDeletedId;
+		  $.ajax({
+          url: "/deleteRecord?" + query,
+          //force to handle it as text
+          dataType: "text",
+
+          success: function(data){
+          		location.reload();
+          },
+          error: function() {
+        		$('#errorDeleteRecordModal').modal('show'); 
+          }
+
+        });
+	}
+	</script>
+	</head>
+	<body>
+
+
+	<div class="row">
+		<div class="col-md-2"></div>
+		<div class="col-md-8">
+			<!-- Button trigger modal -->
+			<button class="btn btn-primary" data-toggle="modal" data-target="#addNewRecordForm">
+			    Add New Record
+			</button>
+			<table id="ttkdata" class="table table-striped main">
+	   			<thead>
+	  				<td>Name</td>
+	  				<td>Phone number</td>
+	  				<td>Relative's Name</td>
+	  				<td>Relative's Phone Number</td>
+	  				<td>Entry Date</td>
+	  				<td>Exit Date</td>
+	  				<td>Bucket</td>
+	  				<td>Failed Contact Count</td>
+	  				<td>Language Preference</td>
+            <td>Calls</td>
+            <td>Actions</td>
+	    		</thead>
+	  		</table>
+	  	</div>
+  	</div>
+
+
+<!-- Error Alert Modal -->
+<div id="errorDeleteRecordModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <!-- <form role="form" method="POST" action="/deleteRecord"> -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+      </div>
+      <div class="modal-body">
+        <p>Error Occured While Deleting This Record</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+    </form>
+  </div>
+</div>
+
+<!-- Delete Record -->
+<div id="deleteRecordModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <!-- <form role="form" method="POST" action="/deleteRecord"> -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete the record?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+        <!-- <input type="hidden" value="id" name="id"> -->
+        <button type="button" class="btn btn-primary" onclick="deleteAjax()" data-dismiss="modal">Yes</button>
+      </div>
+    </div>
+    </form>
+  </div>
+</div>
+
+
+  		<!--Add New Patient Record Modal -->
+<div class="modal fade" id="addNewRecordForm" tabindex="-1" role="dialog" 
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close" 
+                   data-dismiss="modal">
+                       <span aria-hidden="true">&times;</span>
+                       <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    Patient Information
+                </h4>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                
+                <form role="form" method="POST" action="/people">
+                  <div class="form-group">
+                    <label>Patient Name</label>
+                      <input type="text" id="personName" class="form-control"
+                      name="personName" />
+                  </div>
+                  <div class="form-group">
+                    <label>Patient Phone</label>
+                      <input type="text" id="personPhone" class="form-control"
+                          name="personPhone" />
+                  </div>  
+                  <div class="form-group">
+                    <label>Support Name</label>
+                      <input type="text" id="supportName" class="form-control"
+                          name="immediateFamilyName" />
+                  </div>
+                  <div class="form-group">
+                    <label>Support Phone</label>
+                      <input type="text" id="supportPhone" class="form-control"
+                          name="immediateFamilyPhone" />
+                  </div>
+                  <div class="form-group">
+                    <label>Entry Date</label>
+                      <input type="date" id="entryDate" class="form-control"
+                          name="entryDate" />
+                  </div>
+                  <div class="form-group">
+                    <label>Exit Date</label>
+                      <input type="date" id="exitDate" class="form-control"
+                          name="exitDate" />
+                  </div>
+                  <div class="form-group">
+                    <label>Bucket</label>
+                      <input type="text" id="bucket" class="form-control"
+                          name="bucket" />
+                  </div>
+                  <div class="form-group">
+                    <label>Language Preference</label>
+                      <input type="text" id="languagePreference" class="form-control"
+                          name="languagePreference" />
+                  </div>
+
+
+            </div>
+            <input type="hidden" id="action" name="action" value="create">
+            <input type="hidden" id="id" name="id" value="create">
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">
+                            Close
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    Save changes
+                </button>
+            </div>
+           </form>
+        </div>
+    </div>
+</div>
+
+	</body>
+
+</html>
