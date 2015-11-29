@@ -16,6 +16,7 @@ function updateCall(req, res) {
 
 	if((phoneNumber && response && success) == null) {
 		res.send({success: false, msg: "Incomplete call related information"});
+		return;
 	}
 
 	var insertObj = {time: Date.now(), response: response, responder: type};

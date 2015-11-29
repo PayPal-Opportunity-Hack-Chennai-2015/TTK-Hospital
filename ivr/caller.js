@@ -29,7 +29,7 @@ function makeCalls(peopleArr) {
     for (var i = 0; i < peopleArr.length; i++) {
         nextCallDate = moment(peopleArr[i].nextCallDate * 1000).format("MM/DD/YY");
         if ((true || nextCallDate === today) && peopleArr[i].person.name === "Mukesh") { // nextCallDate === today
-            console.log(hostConfig.hostname + peopleArr[i].languagePreference + '/self/' + peopleArr[i].bucket);
+            console.log(hostConfig.hostname + "callxml/" + peopleArr[i].languagePreference + '/self/' + peopleArr[i].bucket);
             console.log(hostConfig.hostname + peopleArr[i].languagePreference + '/relative/' + peopleArr[i].bucket);
             
             var dailyCallsModel = new DailyCallsModel();
@@ -46,13 +46,13 @@ function makeCalls(peopleArr) {
             params = {
                 from: config.from,
                 to: '+91' + peopleArr[i].person.phone,
-                answer_url: hostConfig.hostname + peopleArr[i].languagePreference + '/self/' + peopleArr[i].bucket, // /call/:lang/:type/:level  eg //call/tamil/relative/0
+                answer_url: hostConfig.hostname + 'callxml/' + peopleArr[i].languagePreference + '/self/' + peopleArr[i].bucket, // /call/:lang/:type/:level  eg //call/tamil/relative/0
             };
             api.make_call(params, logCallResponse);
             params = {
                 from: config.from,
                 to: '+91' + peopleArr[i].immediateFamily.phone,
-                answer_url: hostConfig.hostname + peopleArr[i].languagePreference + '/relative/' + peopleArr[i].bucket, // /call/:lang/:type/:level  eg //call/tamil/relative/0
+                answer_url: hostConfig.hostname + 'callxml/' + peopleArr[i].languagePreference + '/relative/' + peopleArr[i].bucket, // /call/:lang/:type/:level  eg //call/tamil/relative/0
             };
             api.make_call(params, logCallResponse);
         }

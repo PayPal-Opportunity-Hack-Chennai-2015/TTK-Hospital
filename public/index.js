@@ -60,6 +60,24 @@ function toDateYYYYMMDD(secs)
 
 $(document).ready(function() {
 
+    var bucketSelect = document.getElementById('bucket');
+
+    for (var i = 0; i < configs.bucket.length; i++){
+        var opt = document.createElement('option');
+        opt.value = i;
+        opt.innerHTML = configs.bucket[i];
+        bucketSelect.appendChild(opt);
+    }
+
+    var statusSelect = document.getElementById('status');
+
+    for (var i = 0; i < configs.status.length; i++){
+        var opt = document.createElement('option');
+        opt.value = i + 1;
+        opt.innerHTML = configs.status[i];
+        statusSelect.appendChild(opt);
+    }
+
     console.log("Hello");
     var callHistoryList = $("#callHistoryModal .callHistoryList tbody");
 
@@ -93,9 +111,35 @@ $(document).ready(function() {
                       return toDate(data);
                     }
                   },
-                  { "data": "bucket"},
+                  { "data": "bucket",
+                    "render": function (data, type, full, meta){
+                        /*if(data == 0)
+                            return "level 0";
+                        if(data == 1)
+                            return "level 1";
+                        if(data == 2)
+                            return "level 2";*/
+                        return configs["bucket"][data];
+                    }
+                  },
                   { "data": "failedContactCount"},
-                  { "data": "status"},
+                  { "data": "status",
+                    "render": function (data, type, full, meta){
+                        /*if(data == 1)
+                            return "level 1";
+                        if(data == 2)
+                            return "level 2";
+                        if(data == 3)
+                            return "level 3";*/
+                        return configs["status"][data - 1];
+                    }
+                  },
+                  { "data": "nextCallDate",
+                    "render": function ( data, type, full, meta ) {
+                      return toDate(data/1000);
+                    }
+
+                  },
                   { "data": "languagePreference"},
                   {
                     "data": "",
@@ -108,7 +152,7 @@ $(document).ready(function() {
             //           return '<a class="btn btn-info btn-sm btn-edit" href=#/' + full[0] + '>' + 'Edit' + '</a>';
               //          console.log(full);
                //         console.log(full["id"]); 
-                        return "<a class='btn btn-info btn-sm' href=# onclick=editButtonPressed(event) data-info='" + JSON.stringify(full) + "'>" + 'Edit' + '</a>' + '<a class="btn btn-danger btn-sm" href=# onclick=deleteRecord("' + full["id"] + '")>Delete</a>';
+                        return "<a class='btn btn-info btn-sm' href=# onclick=editButtonPressed(event) data-info='" + JSON.stringify(full) + "'>" + 'Edit' + '</a>&nbsp;' + '<a class="btn btn-danger btn-sm" href=# onclick=deleteRecord("' + full["id"] + '")>Delete</a>';
                     }
                   }
 
@@ -122,7 +166,7 @@ $(document).ready(function() {
                 var patientData = dataTable.row(tr).data()
                 var patientCalls = dataTable.row(tr).data().calls;
                 var calls = patientCalls.map(function(call) {
-                    return "<tr><td>" + (new Date(call.time)) + "</td><td>" + call.response + "</td></tr>";
+                    return "<tr><td>" + (new Date(call.time)) + "</td><td>" + configs.status[call.response - 1] + "</td></tr>";
                 });
                 console.log(calls);
                 callHistoryList.append(calls.join());

@@ -1,7 +1,8 @@
 <html>
 	<head>
+    <link href='https://fonts.googleapis.com/css?family=Arvo' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" href="stylesheets/style.css"/>
-	
+	 
 	<script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js"></script>
 	<script type="text/javascript" src="https://cdn.datatables.net/1.10.5/js/jquery.dataTables.min.js"></script>
   	<script type="text/javascript" src="https://cdn.datatables.net/plug-ins/f2c75b7247b/integration/bootstrap/3/dataTables.bootstrap.js"></script>
@@ -11,6 +12,8 @@
 	<script type="text/javascript" charset="utf8" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.css"/>
 	<script type="text/javascript" src="index.js"></script>
+  <script type="text/javascript" src="configs/uiConfigs.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://designmodo.github.io/Flat-UI/dist/css/flat-ui.min.css">
 	<script>
 		function createNewRecord(){
 			$("#personName").val(null);
@@ -25,234 +28,253 @@
     		$("#action").val("create");
     		//$("#id").val(data.id);
 		}
+
+		function validateDates(){
+			var entry = document.getElementById("entryDate").value;
+			var exit = document.getElementById("exitDate").value;
+			console.log("Entry "+entry);
+			console.log("Exit "+exit);
+			if(entry > exit){
+				alert("Please enter the dates properly\n");
+				return false;
+			}
+			return true;
+		}
 	</script> 
 	</head>
 	<body>
-
-
-	<div class="row">
-		<div class="col-md-2"></div>
-		<div class="col-md-12">
-			<!-- Button trigger modal -->
-			<button class="btn btn-primary" data-toggle="modal" data-target="#addNewRecordForm" onclick="createNewRecord()">
-			    Add New Record
-			</button>
-			<table id="ttkdata" class="table table-striped main">
-	   			<thead>
-            <td>ID</td>
-	  				<td>Name</td>
-	  				<td>Phone number</td>
-	  				<td>Relative's Name</td>
-	  				<td>Relative's Phone Number</td>
-	  				<td>Entry Date</td>
-	  				<td>Exit Date</td>
-	  				<td>Bucket</td>
-	  				<td>Failed Contact Count</td>
-	  				<td>Status</td>
-	  				<td>Language Preference</td>
-            		<td>Calls</td>
-            		<td>Actions</td>
-	    		</thead>
-	  		</table>
-	  	</div>
-  	</div>
-
-
-<!-- Error Alert Modal -->
-<div id="errorDeleteRecordModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
-    <!-- Modal content-->
-    <!-- <form role="form" method="POST" action="/deleteRecord"> -->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Modal Header</h4>
-      </div>
-      <div class="modal-body">
-        <p>Error Occured While Deleting This Record</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-    </form>
+  <div class="container-fluid" id="header">
+    <h2>TTK Hospital</h2>
   </div>
-</div>
+  <div class="container-fluid">
+  	<div class="row">
+  		<div class="col-md-2"></div>
+  		<div class="col-md-12">
+  			<!-- Button trigger modal -->
+  			<button class="btn btn-primary" data-toggle="modal" data-target="#addNewRecordForm" onclick="createNewRecord()">
+  			    Add New Record
+  			</button>
+  			<table id="ttkdata" class="table table-striped main">
+  	   			<thead>
+              <td>ID</td>
+  	  				<td>Name</td>
+  	  				<td>Phone number</td>
+  	  				<td>Relative's Name</td>
+  	  				<td>Relative's Phone Number</td>
+  	  				<td>Entry Date</td>
+  	  				<td>Exit Date</td>
+  	  				<td>Bucket</td>
+  	  				<td>Failed Contact Count</td>
+  	  				<td>Status</td>
+  	  				<td>Next Call Date</td>
+  	  				<td>Language Preference</td>
+              		<td>Calls</td>
+              		<td>Actions</td>
+  	    		</thead>
+  	  		</table>
+  	  	</div>
+    	</div>
 
-<!-- Delete Record -->
-<div id="deleteRecordModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
 
-    <!-- Modal content-->
-    <!-- <form role="form" method="POST" action="/deleteRecord"> -->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Modal Header</h4>
+  <!-- Error Alert Modal -->
+  <div id="errorDeleteRecordModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <!-- <form role="form" method="POST" action="/deleteRecord"> -->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <div class="modal-body">
+          <p>Error Occured While Deleting This Record</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
       </div>
-      <div class="modal-body">
-        <p>Are you sure you want to delete the record?</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-        <!-- <input type="hidden" value="id" name="id"> -->
-        <button type="button" class="btn btn-primary" onclick="deleteAjax()" data-dismiss="modal">Yes</button>
-      </div>
+      </form>
     </div>
-    </form>
   </div>
-</div>
 
-
-  		<!--Add New Patient Record Modal -->
-<div class="modal fade" id="addNewRecordForm" tabindex="-1" role="dialog" 
-     aria-labelledby="myModalLabel" aria-hidden="true">
+  <!-- Delete Record -->
+  <div id="deleteRecordModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
-        <div class="modal-content">
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <button type="button" class="close" 
-                   data-dismiss="modal">
-                       <span aria-hidden="true">&times;</span>
-                       <span class="sr-only">Close</span>
-                </button>
-                <h4 class="modal-title" id="myModalLabel">
-                    Patient Information
-                </h4>
-            </div>
-            
-            <!-- Modal Body -->
-            <div class="modal-body">
-                
-                <form role="form" method="POST" action="/people"> 
-                  <div class="form-group">
-                    <label>Patient Name</label>
-                      <input type="text" id="personName" class="form-control"
-                      name="personName" />
-                  </div>
-                  <div class="form-group">
-                    <label>Patient Phone</label>
-                      <input type="text" id="personPhone" class="form-control"
-                          name="personPhone" />
-                  </div>  
-                  <div class="form-group">
-                    <label>Support Name</label>
-                      <input type="text" id="supportName" class="form-control"
-                          name="immediateFamilyName" />
-                  </div>
-                  <div class="form-group">
-                    <label>Support Phone</label>
-                      <input type="text" id="supportPhone" class="form-control"
-                          name="immediateFamilyPhone" />
-                  </div>
-                  <div class="form-group">
-                    <label>Entry Date</label>
-                      <input type="date" id="entryDate" class="form-control"
-                          name="entryDate" />
-                  </div>
-                  <div class="form-group">
-                    <label>Exit Date</label>
-                      <input type="date" id="exitDate" class="form-control"
-                          name="exitDate" />
-                  </div>
-                  <div class="form-group">
-                    <label>Bucket</label>
-                    <select id="bucket" class="form-control" name="bucket">
-                    	<option value="0">level 0</option>
-                    	<option value="1">level 1</option>
-                    	<option value="2">level 2</option>
-                    </select>
-                  </div>
-                  <div class="form-group">
-                  	<label>Status</label>
-                  	<!-- <input type="text" id="status" class="form-control" name="status"> -->
-                  	<select id="status" class="form-control" name="status">
-                    	<option value="1">level 1</option>
-                    	<option value="2">level 2</option>
-                    	<option value="3">level 3</option>
-                    </select>
-                  </div>
-                  <div class="form-group">
-                    <label>Language Preference</label>
-                      <input type="text" id="languagePreference" class="form-control"
-                          name="languagePreference" />
-                  </div>
 
-
-            </div>
-            <input type="hidden" id="action" name="action" value="create">
-            <input type="hidden" id="id" name="id" value="create">
-            <!-- Modal Footer -->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default"
-                        data-dismiss="modal">
-                            Close
-                </button>
-                <button type="submit" class="btn btn-primary">
-                    Save changes
-                </button>
-            </div>
-           </form> 
+      <!-- Modal content-->
+      <!-- <form role="form" method="POST" action="/deleteRecord"> -->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
         </div>
-    </div>
-</div>
-
-<div class="modal fade" id="callHistoryModal" tabindex="-1" role="dialog" 
-     aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <button type="button" class="close" 
-                   data-dismiss="modal">
-                       <span aria-hidden="true">&times;</span>
-                       <span class="sr-only">Close</span>
-                </button>
-                <h4 class="modal-title" id="myModalLabel">
-                    Patient call history
-                </h4>
-            </div>
-            
-            <!-- Modal Body -->
-            <div class="modal-body">
-            <div style="overflow-y: scroll; max-height: 250px;">
-                <table class="callHistoryList table table-striped">
-                <thead>
-                  <tr>
-                    <th>Date</th>
-                    <th>Response</th>
-                  </tr>
-                </thead>
-                <tbody>
-                </tbody>
-                </table>
-            </div>
-                <form role="form" method="POST" action="/updateCall">
-                  <div class="form-group">
-                    <label>Patient response</label>
-                      <input type="text" class="form-control"
-                      name="response" />
-                  </div>
-            </div>
-            <input type="hidden" name="type" value="self" />
-            <input type="hidden" name="phoneNumber" id="phoneNumberPK" />
-            <input type="hidden" name="success" value="true" />
-            <!-- Modal Footer -->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default"
-                        data-dismiss="modal">
-                            Close
-                </button>
-                <button type="submit" class="btn btn-primary">
-                    Save changes
-                </button>
-            </div>
-           </form>
+        <div class="modal-body">
+          <p>Are you sure you want to delete the record?</p>
         </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+          <!-- <input type="hidden" value="id" name="id"> -->
+          <button type="button" class="btn btn-primary" onclick="deleteAjax()" data-dismiss="modal">Yes</button>
+        </div>
+      </div>
+      </form>
     </div>
-</div>
+  </div>
 
+
+    		<!--Add New Patient Record Modal -->
+  <div class="modal fade" id="addNewRecordForm" tabindex="-1" role="dialog" 
+       aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+              <!-- Modal Header -->
+              <div class="modal-header">
+                  <button type="button" class="close" 
+                     data-dismiss="modal">
+                         <span aria-hidden="true">&times;</span>
+                         <span class="sr-only">Close</span>
+                  </button>
+                  <h4 class="modal-title" id="myModalLabel">
+                      Patient Information
+                  </h4>
+              </div>
+              
+              <!-- Modal Body -->
+              <div class="modal-body">
+                  
+                  <form role="form" method="POST" action="/people" onsubmit="return validateDates();"> 
+                    <div class="col-md-6 col-sm-12">
+                      <div class="row" style="padding:5px">
+                        <div class="form-group">
+                          <label>Patient Name</label>
+                            <input type="text" id="personName" class="form-control"
+                            name="personName" required/>
+                        </div>
+                        <div class="form-group">
+                          <label>Patient Phone</label>
+                            <input type="text" id="personPhone" class="form-control"
+                                name="personPhone" pattern="[0-9]{10}" required/>
+                        </div>  
+                        <div class="form-group">
+                          <label>Support Name</label>
+                            <input type="text" id="supportName" class="form-control"
+                                name="immediateFamilyName" required/>
+                        </div>
+                        <div class="form-group">
+                          <label>Support Phone</label>
+                            <input type="text" id="supportPhone" class="form-control"
+                                name="immediateFamilyPhone" pattern="[0-9]{10}" required/>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                      <div class="row"  style="padding:5px">
+                        <div class="form-group">
+                          <label>Entry Date</label>
+                            <input type="date" id="entryDate" class="form-control"
+                                name="entryDate" required/>
+                        </div>
+                        <div class="form-group">
+                          <label>Exit Date</label>
+                            <input type="date" id="exitDate" class="form-control"
+                                name="exitDate" required/>
+                        </div>
+                        <div class="form-group">
+                          <label>Bucket</label>
+                          <select id="bucket" class="form-control" name="bucket">
+                          </select>
+                        </div>
+                        <div class="form-group">
+                        	<label>Status</label>
+                        	<!-- <input type="text" id="status" class="form-control" name="status"> -->
+                        	<select id="status" class="form-control" name="status">
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <label>Language Preference</label>
+                          <select id="languagePreference" class="form-control" name="languagePreference">
+                          	<option value="english">English</option>
+                          	<option value="tamil">Tamil</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+
+
+              </div>
+              <input type="hidden" id="action" name="action" value="create">
+              <input type="hidden" id="id" name="id" value="create">
+              <!-- Modal Footer -->
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-default"
+                          data-dismiss="modal">
+                              Close
+                  </button>
+                  <button type="submit" class="btn btn-primary">
+                      Save changes
+                  </button>
+              </div>
+             </form> 
+          </div>
+      </div>
+  </div>
+
+  <div class="modal fade" id="callHistoryModal" tabindex="-1" role="dialog" 
+       aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+              <!-- Modal Header -->
+              <div class="modal-header">
+                  <button type="button" class="close" 
+                     data-dismiss="modal">
+                         <span aria-hidden="true">&times;</span>
+                         <span class="sr-only">Close</span>
+                  </button>
+                  <h4 class="modal-title" id="myModalLabel">
+                      Patient call history
+                  </h4>
+              </div>
+              
+              <!-- Modal Body -->
+              <div class="modal-body">
+              <div>
+                  <table class="callHistoryList table table-striped">
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Response</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+                  </table>
+              </div>
+                  <form role="form" method="POST" action="/updateCall">
+                    <div class="form-group">
+                      <label>Patient response</label>
+                        <input type="text" class="form-control"
+                        name="response" />
+                    </div>
+              </div>
+              <input type="hidden" name="type" value="self" />
+              <input type="hidden" name="phoneNumber" id="phoneNumberPK" />
+              <input type="hidden" name="success" value="true" />
+              <!-- Modal Footer -->
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-default"
+                          data-dismiss="modal">
+                              Close
+                  </button>
+                  <button type="submit" class="btn btn-primary">
+                      Save changes
+                  </button>
+              </div>
+             </form>
+          </div>
+      </div>
+  </div>
+  </div>
 	</body>
 
 

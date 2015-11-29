@@ -1,6 +1,6 @@
 module.exports = [{
     message: {
-        en: {
+        english: {
             relative: "Hi, how  are you relative?",
             self: "Hi, how  are you self?"
         },
@@ -13,7 +13,7 @@ module.exports = [{
     promotionCount: 4,
 }, {
     message: {
-        en: {
+        english: {
             relative: "Hi, how  are you relative 2.0?",
             self: "Hi, how  are you self 2.0?"
         },
@@ -26,7 +26,7 @@ module.exports = [{
     promotionCount: 2,
 },{
     message: {
-        en: {
+        english: {
             relative: "Hi, how  are you relative 3.0?",
             self: "Hi, how  are you self 3.0?"
         },

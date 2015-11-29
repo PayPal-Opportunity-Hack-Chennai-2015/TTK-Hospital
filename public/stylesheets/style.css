@@ -1,11 +1,70 @@
 html, body {
-  margin: 0px;
-  padding: 0px;
+    margin: 0px;
+    padding: 0px;
 }
+
 body {
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    font: 14px "Arvo", Helvetica, Arial, sans-serif;
 }
 
 a {
-  color: #00B7FF;
+    color: #00B7FF;
+}
+
+#ttkdata_wrapper {
+    margin-top: 10px;
+    font-size: 12px;
+}
+
+table {
+    font-family: sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-size: 115%;
+    width: auto;
+    overflow: auto;
+    display: block;
+}
+
+table th {
+    background-color: rgb(112, 196, 105) !important;
+    font-weight: normal;
+    color: white;
+    padding: 20px 30px;
+    text-align: center;
+}
+
+table td {
+    background-color: rgb(238, 238, 238) !important;
+    padding: 20px 30px;
+    color: rgb(111, 111, 111) !important;
+}
+
+#header {
+    background: #16a085;
+    color: #fff;
+    border-bottom: 2px solid #1A8671;
+    text-align: center;
+}
+
+#header h2 {
+    font-size: 54px;
+    line-height: 45px;
+    vertical-align: middle;
+    font-family: "Arvo";
+    letter-spacing: 4px;
+}
+
+.button.btn.theme {
+    background-color: #7db500;
+    border-color: #53730D;
+    border-radius: 0px;
+}
+
+.button.btn.theme:hover {
+    background-color: #93C624;
+    border-color: #53730D;
+}
+
+.btn {
+    border-radius: 0px !important;
 }
