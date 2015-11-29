@@ -12,46 +12,34 @@
 	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.css"/>
 	<script type="text/javascript" src="index.js"></script>
 	<script>
-	toBeDeletedId = null;
-	function deleteRecord(id){
-		console.log("Inside function deleteRecord");
-		console.log("ID is " + id);
-		$('#deleteRecordModal').modal('show'); 
-		toBeDeletedId = id;
-	}
-
-	function deleteAjax(){
-		console.log("Inside Delete");
-		console.log("ID value is "+toBeDeletedId);
-		  var query = "id=" + toBeDeletedId;
-		  $.ajax({
-          url: "/deleteRecord?" + query,
-          //force to handle it as text
-          dataType: "text",
-
-          success: function(data){
-          		location.reload();
-          },
-          error: function() {
-        		$('#errorDeleteRecordModal').modal('show'); 
-          }
-
-        });
-	}
-	</script>
+		function createNewRecord(){
+			$("#personName").val(null);
+    		$("#personPhone").val(null);
+    		$("#supportName").val(null);
+    		$("#supportPhone").val(null);
+    		$("#entryDate").val(null);
+    		$("#exitDate").val(null);
+    		$("#bucket").val(null);
+    		$("#languagePreference").val(null);
+    		$("#status").val(null);
+    		$("#action").val("create");
+    		//$("#id").val(data.id);
+		}
+	</script> 
 	</head>
 	<body>
 
 
 	<div class="row">
 		<div class="col-md-2"></div>
-		<div class="col-md-8">
+		<div class="col-md-12">
 			<!-- Button trigger modal -->
-			<button class="btn btn-primary" data-toggle="modal" data-target="#addNewRecordForm">
+			<button class="btn btn-primary" data-toggle="modal" data-target="#addNewRecordForm" onclick="createNewRecord()">
 			    Add New Record
 			</button>
 			<table id="ttkdata" class="table table-striped main">
 	   			<thead>
+            <td>ID</td>
 	  				<td>Name</td>
 	  				<td>Phone number</td>
 	  				<td>Relative's Name</td>
@@ -60,9 +48,10 @@
 	  				<td>Exit Date</td>
 	  				<td>Bucket</td>
 	  				<td>Failed Contact Count</td>
+	  				<td>Status</td>
 	  				<td>Language Preference</td>
-            <td>Calls</td>
-            <td>Actions</td>
+            		<td>Calls</td>
+            		<td>Actions</td>
 	    		</thead>
 	  		</table>
 	  	</div>
@@ -136,7 +125,7 @@
             <!-- Modal Body -->
             <div class="modal-body">
                 
-                <form role="form" method="POST" action="/people">
+                <form role="form" method="POST" action="/people"> 
                   <div class="form-group">
                     <label>Patient Name</label>
                       <input type="text" id="personName" class="form-control"
@@ -169,8 +158,20 @@
                   </div>
                   <div class="form-group">
                     <label>Bucket</label>
-                      <input type="text" id="bucket" class="form-control"
-                          name="bucket" />
+                    <select id="bucket" class="form-control" name="bucket">
+                    	<option value="0">level 0</option>
+                    	<option value="1">level 1</option>
+                    	<option value="2">level 2</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                  	<label>Status</label>
+                  	<!-- <input type="text" id="status" class="form-control" name="status"> -->
+                  	<select id="status" class="form-control" name="status">
+                    	<option value="1">level 1</option>
+                    	<option value="2">level 2</option>
+                    	<option value="3">level 3</option>
+                    </select>
                   </div>
                   <div class="form-group">
                     <label>Language Preference</label>
@@ -192,11 +193,67 @@
                     Save changes
                 </button>
             </div>
+           </form> 
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="callHistoryModal" tabindex="-1" role="dialog" 
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close" 
+                   data-dismiss="modal">
+                       <span aria-hidden="true">&times;</span>
+                       <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    Patient call history
+                </h4>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+            <div style="overflow-y: scroll; max-height: 250px;">
+                <table class="callHistoryList table table-striped">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Response</th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                </table>
+            </div>
+                <form role="form" method="POST" action="/updateCall">
+                  <div class="form-group">
+                    <label>Patient response</label>
+                      <input type="text" class="form-control"
+                      name="response" />
+                  </div>
+            </div>
+            <input type="hidden" name="type" value="self" />
+            <input type="hidden" name="phoneNumber" id="phoneNumberPK" />
+            <input type="hidden" name="success" value="true" />
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">
+                            Close
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    Save changes
+                </button>
+            </div>
            </form>
         </div>
     </div>
 </div>
 
 	</body>
+
 
 </html>

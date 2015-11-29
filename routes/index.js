@@ -31,6 +31,7 @@ router.post('/people', function(req, res, next) {
     else
     if (requestType == "edit")
         patientMiddleware.edit(req, res);
+
 });
 
 router.post('/callxml/:lang/:calltype/:level', function(req, res, next) {
@@ -52,6 +53,15 @@ router.post('/callxml/:lang/:calltype/:level', function(req, res, next) {
 router.get('/logCallResponse/:type', function(req, res, next) {
     var response = plivo.Response();
     console.log("%j", req.query);
+    var phoneNumber = req.query.To.substr(2);
+    var digit = req.query.digit;
+    var type = req.params.type;
+    var success = true;
+    var insertObj = {time: Date.now(), response: digit, responder: type};
+    callUpdateMiddleware.checkAndInsert(phoneNumber, insertObj, success, function(responseObj){
+    	console.log(responseObj);
+    });
+
     response.addSpeak('Your response has been noted. Thanks for your feedback.');
     res.set('Content-Type', 'text/plain');
     res.end(response.toXML());
@@ -59,6 +69,14 @@ router.get('/logCallResponse/:type', function(req, res, next) {
 
 router.post('/call', function(req, res, next) {
     callUpdateMiddleware.updateCall(req, res);
+});
+
+router.post('/updateCall', function(req, res, next){
+	callUpdateMiddleware.updateCall(req, res);
+});
+
+router.get('/getCallHistory/:id', function(req, res, next){
+	callUpdateMiddleware.getCallHistory(req, res);
 });
 
 router.get('/fetchAllData', function(req, res, next) {

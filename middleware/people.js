@@ -40,11 +40,11 @@ exports.addNewPersonInformation = function(req, res){
 	console.log(entryDate);
 	//var entryDate = 109029090210;
 	var exitDate = moment(req.body.exitDate, 'YYYY-MM-DD').unix();
-	var nextCallDate = exitDate + 604800;
 	console.log(exitDate);
 	//var exitDate = 1912910290293;
 	var bucket = req.body.bucket || null;
 	var languagePreference = req.body.languagePreference || null;
+	var status = req.body.status || null;
 	var failedContactCount = 0;
 	var id = uuid.v1();
 
@@ -75,7 +75,7 @@ exports.addNewPersonInformation = function(req, res){
 		bucket : bucket,
 		languagePreference : languagePreference,
 		failedContactCount : failedContactCount,
-		nextCallDate: nextCallDate
+		status : status
 	});
 
 	console.log(patientInfo);
@@ -119,9 +119,10 @@ exports.edit = function(req, res){
 	var exitDate = moment(req.body.exitDate, 'YYYY-MM-DD').unix();
 	console.log(exitDate);
 	var bucket = req.body.bucket || null;
+	var status = req.body.status || null;
 	var languagePreference = req.body.languagePreference || null;
 	var id = req.body.id || null;
-
+	console.log("PAPAP" + id);
 	if(personName == null || personPhone == null){
 		console.log("Incomplete patient information\n");
 		res.send({success: false, msg: "Incomplete patient information"});
@@ -134,7 +135,7 @@ exports.edit = function(req, res){
 		return;
 	}
 
-	var updateData = {
+	var updateData = new people({
 		id : id,
 		person : {
 			name : personName,
@@ -147,20 +148,31 @@ exports.edit = function(req, res){
 		entryDate : entryDate,
 		exitDate : exitDate,
 		bucket : bucket,
+		status : status,
 		languagePreference : languagePreference
-	};
+	});
 
 
-	people.findOneAndUpdate({id: id}, updateData, {upsert:true}, function(err, doc){
+	people.findOne({id: id}, function(err, doc){
 	    if (err){
 	    	console.log(err);
 	    	res.send({success: false, msg: "update query failed"});
 	    	return;
-	    } 
-	    res.send("succesfully saved");
+	    }
+	    doc.person.name = personName;
+	    doc.person.phone = personPhone;
+	    doc.immediateFamily.name = immediateFamilyName;
+	    doc.immediateFamily.phone = immediateFamilyPhone;
+	    doc.entryDate = entryDate;
+	    doc.exitDate = exitDate;
+	    doc.bucket = bucket;
+	    doc.status = status;
+	    doc.languagePreference = languagePreference;
+	    console.log(doc);
+	    doc.save();
+	    res.redirect('/index.html');
+	    console.log(updateData);
 	});
-	console.log(updateData);
-
 }
 
 exports.fetchAllData = function(req, res){
@@ -174,33 +186,30 @@ exports.fetchAllData = function(req, res){
 			res.send(data);
 		}
 	});
-}
+};
 
  exports.deleteRecord = function(req, res){
+ 	console.log("Called + "  + req.query.id);
  	var id = req.query.id;
  	people.find({id: id}, function(err, patient){
  		if(err){
+ 			 console.log(err);
  			res.send({success: false, msg: "DB error"});
  			return;
  		}
  		else {
  			if(patient){
- 			console.log(patient);
- 			people.remove({id: id}, function(err){
- 			if(err){
- 				console.log("Error removing record from DB");
- 				res.send({success: false, msg: "DB Error"});
- 			} else {
- 				console.log("record removed");
- 				res.send({success: true});
+	 			console.log(patient);
+	 			people.remove({id: id}, function(err){
+		 			if(err){
+		 				console.log("Error removing record from DB");
+		 				res.send({success: false, msg: "DB Error"});
+		 			} else {
+		 				console.log("record removed");
+		 				res.send({success: true});
+		 			}
+	 			});
  			}
- 			});
- 		}
- 		else{
- 			res.send({success: false, msg: "No record with this ID exists"});
- 		}
-
  		}
  	});
- 	
- }
+ };

@@ -13,7 +13,7 @@ var peopleModel = function() {
             },
             phone: {
                 type: String
-            }
+            },
         },
         immediateFamily: {
             name: {
@@ -36,7 +36,7 @@ var peopleModel = function() {
             type: Number
         },
         status:{
-            type: String
+            type: Number
         },
         languagePreference: {
             type: String
@@ -50,6 +50,9 @@ var peopleModel = function() {
             },
             responder: {
                 type: String
+            },
+            bucket: {
+                type: Number
             }
         }],
         nextCallDate: {
